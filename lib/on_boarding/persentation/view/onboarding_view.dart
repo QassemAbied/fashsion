@@ -7,6 +7,7 @@ import 'package:flutter/widgets.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../data/models/onboarding_models.dart';
+import '../../../chose_login.dart';
 
 class OnBoardingView extends StatefulWidget {
   const OnBoardingView({super.key});
@@ -38,7 +39,7 @@ class _OnBoardingViewState extends State<OnBoardingView> {
               padding: const EdgeInsets.only(top: 50, right: 15, left: 15),
               child: Column(
                 children: [
-                  Center(
+                  const Center(
                       child: Image(
                         image: AssetImage('assets/images/Layer 1.png'),
                         width: 100,
@@ -54,11 +55,24 @@ class _OnBoardingViewState extends State<OnBoardingView> {
                     ),
                     animationCurve: Curves.slowMiddle,
                     onPageChanged: (index) {
-                      if (isLast) {
+                      // if (isLast) {
+                      //   pageController.nextPage(
+                      //       duration: const Duration(milliseconds: 750),
+                      //       curve: Curves.slowMiddle);
+                      // } else {}
+                      if(index == onBoardingList.length -1){
+                        setState(() {
+                          isLast=true;
+                        });
                         pageController.nextPage(
-                            duration: Duration(milliseconds: 750),
+                            duration: const Duration(milliseconds: 750),
                             curve: Curves.slowMiddle);
-                      } else {}
+                      }else{
+                        setState(() {
+                          isLast=false;
+                        });
+                      }
+
                     },
                     children: List.generate(onBoardingList.length, (index) {
                       return Column(
@@ -72,7 +86,7 @@ class _OnBoardingViewState extends State<OnBoardingView> {
                             onBoardingList[index].title,
                             style: AppStyles.styleBold24(AppColors.primaryColor),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 20,
                           ),
                           Text(
@@ -83,9 +97,9 @@ class _OnBoardingViewState extends State<OnBoardingView> {
                       );
                     }),
                   ),
-                  // SizedBox(
-                  //   height: 20,
-                  // ),
+                  SizedBox(
+                    height: 20,
+                  ),
                   SmoothPageIndicator(
                     controller: pageController,
                     count: onBoardingList.length,
@@ -99,11 +113,59 @@ class _OnBoardingViewState extends State<OnBoardingView> {
                         dotColor: AppColors.primaryColor.withOpacity(0.30),
                         activeDotColor: AppColors.primaryColor),
                   ),
-                  Expanded(child: SizedBox()),
+                  const Expanded(child: SizedBox()),
                 ],
               ),
             ),
           ),
+         Padding(
+           padding: const EdgeInsets.only(top: 10, right: 15,left: 15),
+           child: Row(
+             children: [
+               Flexible(
+                 flex: 1,
+                 child: ElevatedButton(
+                     onPressed: (){
+                       Navigator.push(context, MaterialPageRoute(builder: (context)=>ChoseLogin()));
+                     },
+                     child: Text('Skip',
+                       style: AppStyles.styleMedium18(AppColors.witheColor1,),)),
+               ),
+               const SizedBox(
+                 width: 50,
+               ),
+               Flexible(
+                 flex: 1,
+                 child: ElevatedButton(
+                     style: ElevatedButton.styleFrom(
+                         maximumSize: const Size(double.infinity,60),
+                         minimumSize: const Size(double.infinity, 50),
+                         backgroundColor: AppColors.witheColor1,
+                         // disabledBackgroundColor: AppColors.primaryColor,
+                         foregroundColor: AppColors.witheColor1,
+                         // disabledForegroundColor: AppColors.blackColor,
+                         elevation: 2.0,
+                         surfaceTintColor: AppColors.witheColor1,
+                         animationDuration: const Duration(milliseconds: 150),
+                         // textStyle: AppStyles.styleBold20(AppColors.witheColor),
+                         padding: const EdgeInsets.only(top: 10, bottom: 10,)
+                     ),
+                     onPressed: (){
+                       if(isLast){
+                         Navigator.push(context, MaterialPageRoute(builder: (context)=>ChoseLogin()));
+                       }else{
+                         pageController.nextPage(
+                             duration: const Duration(milliseconds: 750),
+                             curve: Curves.fastLinearToSlowEaseIn
+                         );
+                       }
+                     },
+                     child: Text(isLast? 'Start':'Next',
+                       style: AppStyles.styleMedium18(AppColors.blackColor,),)),
+               ),
+             ],
+           ),
+         ),
 
 
 

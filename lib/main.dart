@@ -1,5 +1,9 @@
+import 'package:fashsion/main_view.dart';
+import 'package:fashsion/siginup_view.dart';
 import 'package:flutter/material.dart';
 
+import 'core/utiles/app_colors.dart';
+import 'login_view.dart';
 import 'on_boarding/persentation/view/onboarding_view.dart';
 
 void main() {
@@ -15,6 +19,21 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+              maximumSize: const Size(double.infinity,60),
+              minimumSize: const Size(double.infinity, 50),
+              backgroundColor: AppColors.primaryColor,
+              // disabledBackgroundColor: AppColors.primaryColor,
+              foregroundColor: AppColors.witheColor,
+              // disabledForegroundColor: AppColors.blackColor,
+              elevation: 2.0,
+              surfaceTintColor: AppColors.primaryColor,
+              animationDuration: const Duration(milliseconds: 150),
+              // textStyle: AppStyles.styleBold20(AppColors.witheColor),
+              padding: const EdgeInsets.only(top: 10, bottom: 10,)
+          ),
+        ),
         // This is the theme of your application.
         //
         // TRY THIS: Try running your application with "flutter run". You'll see
@@ -33,7 +52,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const OnBoardingView(),
+      home:  MainView(currentIndex: 0),
     );
   }
 }
