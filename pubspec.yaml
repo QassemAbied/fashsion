@@ -37,6 +37,25 @@ dependencies:
   cupertino_icons: ^1.0.6
   expandable_page_view: ^1.0.17
   smooth_page_indicator: ^1.1.0
+  flutter_svg:
+  get:
+  google_fonts:
+  device_preview:
+  intl_phone_field:
+  persistent_bottom_nav_bar:
+  shared_preferences:
+  pinput:
+  flutter_iconly:
+  dio:
+  dartz: ^0.10.1
+  http: ^1.2.1
+  image_picker: ^1.0.7
+  path_provider: ^2.0.9
+  dotted_border:
+  shimmer:
+  carousel_slider:
+  bloc:
+  flutter_bloc:
 
 dev_dependencies:
   flutter_test:

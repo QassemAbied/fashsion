@@ -1,7 +1,7 @@
 import 'package:fashsion/core/custom_bottons.dart';
 import 'package:fashsion/core/utiles/app_colors.dart';
-import 'package:fashsion/login_view.dart';
-import 'package:fashsion/siginup_view.dart';
+import 'package:fashsion/auth/login_view.dart';
+import 'package:fashsion/auth/siginup_view.dart';
 import 'package:flutter/material.dart';
 
 class ChoseLogin extends StatelessWidget {

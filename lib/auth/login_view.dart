@@ -1,11 +1,15 @@
+import 'package:fashsion/auth/manager/auth_cubit.dart';
 import 'package:fashsion/core/custom_bottons.dart';
 import 'package:fashsion/core/utiles/app_colors.dart';
 import 'package:fashsion/core/utiles/app_styles.dart';
-import 'package:fashsion/siginup_view.dart';
+import 'package:fashsion/auth/siginup_view.dart';
+import 'package:fashsion/main_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'core/custom_text_filed.dart';
+import '../core/custom_text_filed.dart';
+import '../data/models/sign_in_required_models.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -21,6 +25,7 @@ class _LoginViewState extends State<LoginView> {
   final TextEditingController passwordController= TextEditingController();
 
   bool isPassword=true;
+  bool absorbing=false;
   @override
   Widget build(BuildContext context) {
     double sizeWidth = MediaQuery.of(context).size.width ;
@@ -28,7 +33,65 @@ class _LoginViewState extends State<LoginView> {
     return Scaffold(
       backgroundColor: AppColors.primaryColor,
       body: SingleChildScrollView(
-        child: Column(
+        child: BlocConsumer<AuthCubit, AuthState>(
+  listener: (context, state)async {
+    if(state is SignInLoading){
+      await   showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        return AbsorbPointer(
+          absorbing: absorbing,
+          child: const Center(
+            child: CircularProgressIndicator(
+              color: AppColors.primaryColor,
+            ),
+          ),
+        );
+      },);
+    }
+    if(state is SignInSuccess){
+      //Navigator.pop(context);
+      // CustomDialog.dialogWidget(
+      //     context: context,
+      //     image: AppImages.successImage,
+      //     title: 'Account successfully created'
+      // );
+      // Future.delayed(const Duration(seconds: 1), (){
+      //   Navigator.pop(context);
+      //   Navigator.pushAndRemoveUntil(
+      //     context,
+      //     PageFadeTransition(page: MainView(currentIndex: 0,), duration: 0)
+      //   );
+      // });
+
+      // CustomDialog.dialogWidget(
+      //     context: context,
+      //     image: AppImages.successImage,
+      //     title: 'Account successfully created'
+      // ).then((value) {
+      //   Navigator.push(
+      //     context,
+      //     PageFadeTransition(page: const SignInView(), duration: 0),
+      //   );
+      // });
+
+      Navigator.pushAndRemoveUntil(context,
+          MaterialPageRoute(builder: (context)=>MainView(currentIndex: 0)),
+              (route) => false);
+    }
+    if(state is SignInFailure){
+
+
+      Navigator.pop(context);
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(state.errorMassage, )
+      ),
+      );
+    }
+  },
+  builder: (context, state) {
+    return Column(
           children: [
             Container(
               height: sizeHeight/3,
@@ -83,7 +146,14 @@ class _LoginViewState extends State<LoginView> {
                     Padding(
                       padding:  EdgeInsets.symmetric(horizontal:sizeWidth/4 ),
                       child: CustomButtons.customElevatedButton(
-                          onTap: (){},
+                          onTap: ()async{
+                            await BlocProvider.of<AuthCubit>(context).signInCubit(
+                              context: context,
+                              signInRequired: SignInRequired(
+                                  email: emailController.text,
+                                  password: passwordController.text),
+                            );
+                          },
                           title: 'Sign in',
                       ),
                     ),
@@ -114,7 +184,9 @@ class _LoginViewState extends State<LoginView> {
               ),
             ),
           ],
-        ),
+        );
+  },
+),
       ),
     );
   }
